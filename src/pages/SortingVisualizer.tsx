@@ -7,6 +7,7 @@ import { AlgorithmSelector } from '../components/AlgorithmSelector';
 import { ArrayInput } from '../components/ArrayInput';
 import { SpeedControl } from '../components/SpeedControl';
 import { AnimationControls } from '../components/AnimationControls';
+import { WorkspaceHeader } from '../components/WorkspaceHeader/WorkspaceHeader';
 import './SortingVisualizer.scss';
 
 const DEFAULT_ARRAY = [64, 34, 25, 12, 22, 11, 90, 88, 45, 50, 33, 17, 78];
@@ -56,6 +57,7 @@ export function SortingVisualizer() {
 
   return (
     <div className="sorting-visualizer">
+      <WorkspaceHeader title="Sorting Visualizer" />
       <div className="visualizer-container">
         <header className="visualizer-header">
           <h1 className="visualizer-title">

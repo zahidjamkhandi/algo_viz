@@ -37,7 +37,12 @@ src/
 │   ├── AnimationControls.*
 │   ├── ArrayInput.*
 │   ├── BarChart.*
-│   └── SpeedControl.*
+│   ├── SpeedControl.*
+│   └── WorkspaceHeader/
+│       ├── WorkspaceHeader.tsx
+│       └── WorkspaceHeader.scss
+├── constants/              # Application constants
+│   └── routes.ts
 ├── hooks/                  # Custom React hooks
 │   ├── useAnimationState.ts
 │   └── useSortingVisualizer.ts
@@ -56,6 +61,10 @@ src/
 - Landing page route: `/`
 - Sorting visualizer route: `/sort`
 - Clean navigation structure
+- Centralized route constants in `src/constants/routes.ts`
+- Type-safe route definitions with TypeScript `as const` assertion
+- Future-ready routes defined: `/search`, `/pathfinding`, `/graphs`, `/trees`, `/dynamic-programming`
+- Eliminates hardcoded route strings throughout codebase
 
 ### 5. Sorting Algorithm Modules ✅
 
@@ -115,6 +124,19 @@ Implemented four sorting algorithms with complete animation step generation:
 
 ### 7. Sorting Visualizer Workspace UI ✅
 
+**Navigation**:
+- **WorkspaceHeader Component** (`src/components/WorkspaceHeader/WorkspaceHeader.tsx`)
+  - Reusable header for all visualizer workspaces
+  - Three-section CSS Grid layout: branding (left), app name (center), workspace title (right)
+  - Clickable algo_viz branding navigates to landing page using centralized route constants
+  - Props-based configuration: `title` (required), `currentModule` (optional)
+  - NVIDIA-inspired design with neon green accents on hover
+  - Full accessibility: semantic HTML (`<header>`, `<nav>`), ARIA labels, keyboard navigation
+  - Responsive design: desktop three-column, tablet reduced spacing, mobile stacked layout
+  - Uses React Router `Link` component for declarative navigation (not imperative `navigate`)
+  - Compatible with deep linking, page refresh, and Vercel deployment
+  - Future-proof: supports all upcoming visualizers without modification
+
 **Components**:
 - Algorithm selector (radio group behavior)
 - Custom dataset input with validation
@@ -125,6 +147,7 @@ Implemented four sorting algorithms with complete animation step generation:
 - State legend
 
 **Layout**:
+- WorkspaceHeader at top of page
 - Responsive grid for controls
 - Centered visualization canvas
 - Clear visual hierarchy
@@ -243,6 +266,7 @@ Implemented four sorting algorithms with complete animation step generation:
 - SCSS variables for colors
 - Nesting and mixins
 - Modular styling approach
+- WorkspaceHeader.scss with three-column grid layout, hover effects, and responsive breakpoints
 
 **Tailwind Configuration**:
 - Custom nvidia-green color
@@ -255,6 +279,16 @@ Implemented four sorting algorithms with complete animation step generation:
 - Charcoal layers (#0A0A0A)
 - Neon green accents (#76B900)
 - Consistent spacing and typography
+- Reusable design tokens across all components
+
+**WorkspaceHeader Styling**:
+- CSS Grid with three equal columns (1fr 1fr 1fr)
+- Charcoal background (#0A0A0A) with subtle border
+- Neon green hover effects on branding link (#76B900)
+- Smooth 200ms transitions for all interactive states
+- Responsive breakpoints: desktop (≥768px), mobile (<768px)
+- Visible focus indicators for keyboard navigation
+- Text alignment: left (branding), center (app name), right (workspace title)
 
 ### 14. ESLint & Prettier ✅
 
@@ -297,12 +331,24 @@ Implemented four sorting algorithms with complete animation step generation:
 - Screen reader compatible
 - Meaningful alt text and labels
 - AnimationControls with full keyboard accessibility
+- WorkspaceHeader with semantic navigation landmarks
+
+**WorkspaceHeader Accessibility**:
+- Semantic `<header>` element with `role="banner"`
+- Semantic `<nav>` element with `aria-label="Main navigation"`
+- ARIA label on home link: `aria-label="Navigate to Landing Page"`
+- Keyboard accessible navigation with visible focus indicators
+- Proper heading hierarchy and landmark regions
+- Screen reader friendly navigation structure
+- Tab order follows natural reading order (left to right)
+- High contrast focus outlines for keyboard navigation
 
 **Visual Feedback**:
 - Animated paused indicator with pulsing glow effect
 - Positioned in top-right of visualization canvas
 - "⏸ Animation Paused" text with NVIDIA green styling
 - CSS keyframe animation for attention-grabbing pulse
+- WorkspaceHeader provides consistent navigation context across all visualizer pages
 
 ### 16. Performance Optimizations ✅
 
@@ -435,26 +481,47 @@ Implemented four sorting algorithms with complete animation step generation:
 
 ## Next Steps (Future Enhancements)
 
-1. **Path Finding Visualizer**
+1. **Path Finding Visualizer** (Route: `/pathfinding`)
    - Dijkstra's algorithm
    - A* search
    - BFS/DFS
+   - Will use WorkspaceHeader with `title="Path Finding Visualizer"`
 
-2. **Searching Visualizer**
+2. **Searching Visualizer** (Route: `/search`)
    - Binary search
    - Linear search
    - Jump search
+   - Will use WorkspaceHeader with `title="Search Visualizer"`
 
-3. **Additional Features**
+3. **Graph Visualizer** (Route: `/graphs`)
+   - Graph traversal algorithms
+   - Will use WorkspaceHeader with `title="Graph Visualizer"`
+
+4. **Tree Visualizer** (Route: `/trees`)
+   - Tree traversal algorithms
+   - Will use WorkspaceHeader with `title="Tree Visualizer"`
+
+5. **Dynamic Programming Visualizer** (Route: `/dynamic-programming`)
+   - DP algorithm visualizations
+   - Will use WorkspaceHeader with `title="Dynamic Programming Visualizer"`
+
+6. **Additional Features**
    - Algorithm comparison mode
    - Export animations
    - More sorting algorithms
    - Performance metrics
 
+**Navigation Scalability**:
+- All future visualizers will use the same WorkspaceHeader component
+- Only the `title` prop needs to change for each visualizer
+- No modifications to WorkspaceHeader component required
+- Centralized route constants already defined in `src/constants/routes.ts`
+- Landing page remains header-free with dedicated hero layout
+
 ## Conclusion
 
 Successfully implemented a production-ready algorithm visualization platform with:
-- ✅ 20/20 todos completed (including pause/resume animation controls)
+- ✅ 21/21 todos completed (including pause/resume animation controls and global navigation system)
 - ✅ Clean, maintainable architecture
 - ✅ Premium NVIDIA-inspired design
 - ✅ Full TypeScript type safety
@@ -463,14 +530,26 @@ Successfully implemented a production-ready algorithm visualization platform wit
 - ✅ Accessibility compliance
 - ✅ Production build ready
 - ✅ Educational features for instructors (pause/resume at any step)
+- ✅ Scalable navigation architecture for future visualizers
 
-**Latest Enhancement (July 19, 2026)**:
-Added interactive pause/resume controls enabling instructors to pause visualizations at any point for detailed explanation. Features include:
-- Intuitive play/pause icon toggle
-- Keyboard accessibility (spacebar shortcut)
-- Visual highlighting maintained during pause
-- Smooth resume without animation restart
-- Clean state management architecture
-- Comprehensive edge case handling
+**Latest Enhancements (July 19, 2026)**:
 
-The application is ready for deployment and demonstrates professional-grade frontend engineering practices with enhanced educational capabilities.
+1. **Interactive Pause/Resume Controls**:
+   - Intuitive play/pause icon toggle
+   - Keyboard accessibility (spacebar shortcut)
+   - Visual highlighting maintained during pause
+   - Smooth resume without animation restart
+   - Clean state management architecture
+   - Comprehensive edge case handling
+
+2. **Global Application Navigation System**:
+   - Reusable WorkspaceHeader component for all visualizer workspaces
+   - Centralized route constants for maintainable navigation
+   - Three-section responsive layout with NVIDIA-inspired design
+   - Declarative React Router navigation (compatible with deep linking and Vercel deployment)
+   - Full WCAG 2.1 AA accessibility compliance
+   - Future-proof architecture supporting unlimited visualizer modules
+   - Landing page preserves dedicated hero layout (header-free)
+   - Zero breaking changes to existing functionality
+
+The application is ready for deployment and demonstrates professional-grade frontend engineering practices with enhanced educational capabilities and scalable architecture for future growth.
