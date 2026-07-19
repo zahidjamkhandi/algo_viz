@@ -53,7 +53,7 @@ export type AnimationStep = CompareStep | SwapStep | OverwriteStep | PivotStep;
 /**
  * Supported sorting algorithms
  */
-export type SortingAlgorithm = 'bubble' | 'insertion' | 'quick' | 'merge';
+export type SortingAlgorithm = 'bubble' | 'insertion' | 'quick' | 'merge' | 'selection' | 'heap';
 
 /**
  * Algorithm metadata
@@ -92,5 +92,17 @@ export const ALGORITHM_INFO: Record<SortingAlgorithm, AlgorithmInfo> = {
     timeComplexity: 'O(n log n)',
     spaceComplexity: 'O(n)',
     description: 'Divides the array into halves, recursively sorts them, and merges the sorted halves.',
+  },
+  selection: {
+    name: 'Selection Sort',
+    timeComplexity: 'O(n²)',
+    spaceComplexity: 'O(1)',
+    description: 'Finds the minimum element in the unsorted portion and swaps it with the first unsorted position.',
+  },
+  heap: {
+    name: 'Heap Sort',
+    timeComplexity: 'O(n log n)',
+    spaceComplexity: 'O(1)',
+    description: 'Builds a max heap from the array and repeatedly extracts the maximum element to sort.',
   },
 };
