@@ -12,11 +12,13 @@ interface UseSortingVisualizerReturn {
   activeIndices: number[];
   pivotIndex: number | null;
   isSorting: boolean;
+  isPaused: boolean;
   animationSpeed: number;
   setArray: (arr: number[]) => void;
   setAnimationSpeed: (speed: number) => void;
   startSorting: (algorithm: SortingAlgorithm) => void;
   resetVisualizer: () => void;
+  togglePause: () => void;
 }
 
 const ANIMATION_DELAY_MS = 400;
@@ -26,10 +28,14 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
   const [activeIndices, setActiveIndices] = useState<number[]>([]);
   const [pivotIndex, setPivotIndex] = useState<number | null>(null);
   const [isSorting, setIsSorting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(1);
 
   const originalArrayRef = useRef<number[]>(initialArray);
   const timeoutIdsRef = useRef<number[]>([]);
+  const animationsRef = useRef<AnimationStep[]>([]);
+  const currentStepRef = useRef<number>(0);
+  const workingArrayRef = useRef<number[]>([]);
 
   const clearAllTimeouts = useCallback(() => {
     timeoutIdsRef.current.forEach((id) => clearTimeout(id));
@@ -42,6 +48,10 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
     setActiveIndices([]);
     setPivotIndex(null);
     setIsSorting(false);
+    setIsPaused(false);
+    currentStepRef.current = 0;
+    animationsRef.current = [];
+    workingArrayRef.current = [];
   }, [clearAllTimeouts]);
 
   const setArrayWrapper = useCallback((arr: number[]) => {
@@ -51,44 +61,58 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
     setActiveIndices([]);
     setPivotIndex(null);
     setIsSorting(false);
+    setIsPaused(false);
+    currentStepRef.current = 0;
+    animationsRef.current = [];
+    workingArrayRef.current = [];
   }, [clearAllTimeouts]);
 
+  const executeAnimationStep = useCallback(
+    (step: AnimationStep, workingArray: number[]) => {
+      switch (step.type) {
+        case 'compare':
+          setActiveIndices(step.indices);
+          setPivotIndex(null);
+          break;
+
+        case 'swap': {
+          const [i, j] = step.indices;
+          [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];
+          setArray([...workingArray]);
+          setActiveIndices(step.indices);
+          setPivotIndex(null);
+          break;
+        }
+
+        case 'overwrite': {
+          const [i] = step.indices;
+          workingArray[i] = step.value;
+          setArray([...workingArray]);
+          setActiveIndices(step.indices);
+          setPivotIndex(null);
+          break;
+        }
+
+        case 'pivot':
+          setPivotIndex(step.indices[0]);
+          setActiveIndices([]);
+          break;
+      }
+    },
+    []
+  );
+
   const executeAnimations = useCallback(
-    (animations: AnimationStep[]) => {
-      const workingArray = [...array];
+    (animations: AnimationStep[], startFromStep: number = 0) => {
+      const workingArray = startFromStep === 0 ? [...array] : [...workingArrayRef.current];
+      workingArrayRef.current = workingArray;
       const delay = ANIMATION_DELAY_MS / animationSpeed;
 
-      animations.forEach((step, index) => {
+      for (let index = startFromStep; index < animations.length; index++) {
         const timeoutId = window.setTimeout(() => {
-          switch (step.type) {
-            case 'compare':
-              setActiveIndices(step.indices);
-              setPivotIndex(null);
-              break;
-
-            case 'swap': {
-              const [i, j] = step.indices;
-              [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];
-              setArray([...workingArray]);
-              setActiveIndices(step.indices);
-              setPivotIndex(null);
-              break;
-            }
-
-            case 'overwrite': {
-              const [i] = step.indices;
-              workingArray[i] = step.value;
-              setArray([...workingArray]);
-              setActiveIndices(step.indices);
-              setPivotIndex(null);
-              break;
-            }
-
-            case 'pivot':
-              setPivotIndex(step.indices[0]);
-              setActiveIndices([]);
-              break;
-          }
+          const step = animations[index];
+          currentStepRef.current = index;
+          executeAnimationStep(step, workingArray);
 
           // Clear highlights after last animation
           if (index === animations.length - 1) {
@@ -96,22 +120,63 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
               setActiveIndices([]);
               setPivotIndex(null);
               setIsSorting(false);
+              setIsPaused(false);
+              currentStepRef.current = 0;
+              animationsRef.current = [];
+              workingArrayRef.current = [];
             }, delay);
           }
-        }, index * delay);
+        }, (index - startFromStep) * delay);
 
         timeoutIdsRef.current.push(timeoutId);
-      });
+      }
     },
-    [array, animationSpeed]
+    [array, animationSpeed, executeAnimationStep]
   );
+
+  const togglePause = useCallback(() => {
+    if (!isSorting) return;
+
+    if (isPaused) {
+      // Resume animation from current step
+      setIsPaused(false);
+      const remainingAnimations = animationsRef.current;
+      const nextStep = currentStepRef.current + 1;
+      
+      // Edge case: If we're at the last step or beyond, complete the animation
+      if (nextStep >= remainingAnimations.length) {
+        setActiveIndices([]);
+        setPivotIndex(null);
+        setIsSorting(false);
+        setIsPaused(false);
+        currentStepRef.current = 0;
+        animationsRef.current = [];
+        workingArrayRef.current = [];
+        return;
+      }
+      
+      if (nextStep < remainingAnimations.length) {
+        executeAnimations(remainingAnimations, nextStep);
+      }
+    } else {
+      // Pause animation - clear all pending timeouts
+      setIsPaused(true);
+      clearAllTimeouts();
+    }
+  }, [isSorting, isPaused, executeAnimations, clearAllTimeouts]);
 
   const startSorting = useCallback(
     (algorithm: SortingAlgorithm) => {
+      // Edge case: Prevent starting if already sorting or array is empty
       if (isSorting || array.length === 0) return;
 
+      // Edge case: Clear any lingering state from previous runs
       clearAllTimeouts();
       setIsSorting(true);
+      setIsPaused(false);
+      currentStepRef.current = 0;
+      animationsRef.current = [];
+      workingArrayRef.current = [];
 
       let animations: AnimationStep[] = [];
 
@@ -136,7 +201,15 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
           break;
       }
 
-      executeAnimations(animations);
+      // Edge case: Handle empty animation sequence
+      if (animations.length === 0) {
+        setIsSorting(false);
+        return;
+      }
+
+      animationsRef.current = animations;
+      workingArrayRef.current = [...array];
+      executeAnimations(animations, 0);
     },
     [array, isSorting, clearAllTimeouts, executeAnimations]
   );
@@ -146,10 +219,12 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
     activeIndices,
     pivotIndex,
     isSorting,
+    isPaused,
     animationSpeed,
     setArray: setArrayWrapper,
     setAnimationSpeed,
     startSorting,
     resetVisualizer,
+    togglePause,
   };
 }

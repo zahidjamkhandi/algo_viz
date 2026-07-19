@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { SortingAlgorithm } from '../algos/sorting/types';
 import { ALGORITHM_INFO } from '../algos/sorting/types';
 import { useSortingVisualizer } from '../hooks/useSortingVisualizer';
@@ -6,6 +6,7 @@ import { BarChart } from '../components/BarChart';
 import { AlgorithmSelector } from '../components/AlgorithmSelector';
 import { ArrayInput } from '../components/ArrayInput';
 import { SpeedControl } from '../components/SpeedControl';
+import { AnimationControls } from '../components/AnimationControls';
 import './SortingVisualizer.scss';
 
 const DEFAULT_ARRAY = [64, 34, 25, 12, 22, 11, 90, 88, 45, 50, 33, 17, 78];
@@ -18,11 +19,13 @@ export function SortingVisualizer() {
     activeIndices,
     pivotIndex,
     isSorting,
+    isPaused,
     animationSpeed,
     setArray,
     setAnimationSpeed,
     startSorting,
     resetVisualizer,
+    togglePause,
   } = useSortingVisualizer(DEFAULT_ARRAY);
 
   const handleArraySubmit = (newArray: number[]) => {
@@ -32,6 +35,22 @@ export function SortingVisualizer() {
   const handleStartSorting = () => {
     startSorting(selectedAlgorithm);
   };
+
+  // Keyboard shortcut: Spacebar to toggle pause/resume
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Only handle spacebar when sorting is active
+      if (event.code === 'Space' && isSorting) {
+        event.preventDefault(); // Prevent page scroll
+        togglePause();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [isSorting, togglePause]);
 
   const algorithmInfo = ALGORITHM_INFO[selectedAlgorithm];
 
@@ -93,6 +112,11 @@ export function SortingVisualizer() {
             activeIndices={activeIndices}
             pivotIndex={pivotIndex}
           />
+          {isPaused && (
+            <div className="paused-indicator" role="status" aria-live="polite">
+              <span className="paused-text">⏸ Animation Paused</span>
+            </div>
+          )}
         </div>
 
         <div className="action-buttons">
@@ -103,6 +127,11 @@ export function SortingVisualizer() {
           >
             {isSorting ? 'Sorting...' : 'Start Sorting'}
           </button>
+          <AnimationControls
+            isPaused={isPaused}
+            isPlaying={isSorting}
+            onTogglePause={togglePause}
+          />
           <button
             className="action-button action-button-secondary"
             onClick={resetVisualizer}
@@ -112,7 +141,11 @@ export function SortingVisualizer() {
         </div>
 
         <div className="legend-section">
-          <h4 className="legend-title">State Legend</h4>
+          <h4 className="legend-title">Controls & Legend</h4>
+          <div className="keyboard-hint">
+            <span className="hint-icon">⌨️</span>
+            <span className="hint-text">Press <kbd>Spacebar</kbd> to pause/resume animation</span>
+          </div>
           <div className="legend-items">
             <div className="legend-item">
               <div className="legend-color legend-color-default"></div>
