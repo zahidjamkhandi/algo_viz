@@ -19,7 +19,7 @@ interface UseSortingVisualizerReturn {
   resetVisualizer: () => void;
 }
 
-const ANIMATION_DELAY_MS = 40;
+const ANIMATION_DELAY_MS = 400;
 
 export function useSortingVisualizer(initialArray: number[] = []): UseSortingVisualizerReturn {
   const [array, setArray] = useState<number[]>(initialArray);
