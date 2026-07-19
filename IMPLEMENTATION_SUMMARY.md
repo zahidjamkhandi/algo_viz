@@ -29,6 +29,8 @@ src/
 │   ├── insertionSort.ts
 │   ├── quickSort.ts
 │   ├── mergeSort.ts
+│   ├── heapSort.ts
+│   ├── selectionSort.ts
 │   └── types.ts
 ├── components/             # Reusable UI components
 │   ├── AlgorithmSelector.*
@@ -75,6 +77,16 @@ Implemented four sorting algorithms with complete animation step generation:
 - Auxiliary array for merging
 - Animation steps: compare, overwrite
 
+**Heap Sort** (`O(n log n)`)
+- Uses a binary tree structure to find extremes
+- In-place sorting with zero extra memory
+- Animation steps: build heap, swap root, heapify
+
+**Selection Sort** (`O(n²)`)
+- Scans for the smallest element and swaps
+- Divides array into sorted and unsorted boundaries
+- Animation steps: scan unsorted, track minimum, swap
+
 **Type System**:
 - Discriminated union for animation steps
 - Strict TypeScript interfaces
@@ -102,7 +114,7 @@ Implemented four sorting algorithms with complete animation step generation:
 **Components**:
 - Algorithm selector (radio group behavior)
 - Custom dataset input with validation
-- Speed controls (0.5x, 1x, 2x, 4x)
+- Speed controls (0.25x, 0.5x, 1x, 2x, 4x)
 - Action buttons (Start, Reset)
 - Algorithm information panel
 - State legend
@@ -157,6 +169,7 @@ Implemented four sorting algorithms with complete animation step generation:
 ### 11. Speed Controls ✅
 
 **Options**:
+- 0.25x (ultra slower, detailed observation)
 - 0.5x (slower, detailed observation)
 - 1x (normal speed)
 - 2x (faster)
