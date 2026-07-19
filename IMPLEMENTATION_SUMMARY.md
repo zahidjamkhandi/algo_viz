@@ -176,7 +176,7 @@ Implemented four sorting algorithms with complete animation step generation:
 - 4x (rapid execution)
 
 **Implementation**:
-- Unified 40ms base delay
+- Unified 400ms base delay
 - Speed multiplier adjustment
 - Consistent timing across algorithms
 
