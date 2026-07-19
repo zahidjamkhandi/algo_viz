@@ -4,6 +4,8 @@ import { bubbleSort } from '../algos/sorting/bubbleSort';
 import { insertionSort } from '../algos/sorting/insertionSort';
 import { quickSort } from '../algos/sorting/quickSort';
 import { mergeSort } from '../algos/sorting/mergeSort';
+import { selectionSort } from '../algos/sorting/selectionSort';
+import { heapSort } from '../algos/sorting/heapSort';
 
 interface UseSortingVisualizerReturn {
   array: number[];
@@ -125,6 +127,12 @@ export function useSortingVisualizer(initialArray: number[] = []): UseSortingVis
           break;
         case 'merge':
           animations = mergeSort(array);
+          break;
+        case 'selection':
+          animations = selectionSort(array);
+          break;
+        case 'heap':
+          animations = heapSort(array);
           break;
       }
 
