@@ -8,7 +8,7 @@ interface AlgorithmSelectorProps {
   disabled?: boolean;
 }
 
-const algorithms: SortingAlgorithm[] = ['bubble', 'insertion', 'quick', 'merge'];
+const algorithms: SortingAlgorithm[] = ['bubble', 'insertion', 'quick', 'merge', 'selection', 'heap'];
 
 export function AlgorithmSelector({ selected, onSelect, disabled = false }: AlgorithmSelectorProps) {
   return (
