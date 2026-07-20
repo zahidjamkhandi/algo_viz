@@ -58,9 +58,7 @@ export function LandingPage() {
             aria-label="Scroll to Developer Signature section"
           >
             <span className="cta-text">
-              Curious who built algo_viz?
-              <br />
-              Meet the developer ↓
+              Curious who built algo_viz? Meet the developer ↯
             </span>
           </button>
         </section>
