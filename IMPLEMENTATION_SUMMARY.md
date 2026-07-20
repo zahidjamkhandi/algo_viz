@@ -32,12 +32,17 @@ src/
 │   ├── heapSort.ts
 │   ├── selectionSort.ts
 │   └── types.ts
+├── assets/                 # Static assets
+│   └── meetTheDev.jpeg
 ├── components/             # Reusable UI components
 │   ├── AlgorithmSelector.*
 │   ├── AnimationControls.*
 │   ├── ArrayInput.*
 │   ├── BarChart.*
 │   ├── SpeedControl.*
+│   ├── DeveloperSignature/
+│   │   ├── DeveloperSignature.tsx
+│   │   └── DeveloperSignature.scss
 │   └── WorkspaceHeader/
 │       ├── WorkspaceHeader.tsx
 │       └── WorkspaceHeader.scss
@@ -115,12 +120,21 @@ Implemented four sorting algorithms with complete animation step generation:
   - Sorting Visualizer (active, enabled)
   - Path Finding Visualizer (disabled, coming soon)
   - Searching Visualizer (disabled, coming soon)
+- Smooth-scroll navigation CTA to Developer Signature section
+- Developer Signature section as closing credits
 
 **Design Elements**:
 - Gradient backgrounds
 - Neon glow shadows
 - Smooth transitions
 - Responsive grid layout
+
+**Navigation**:
+- Smooth-scroll CTA button in Description section
+- Text: "Curious who built algo_viz? Meet the developer →"
+- Keyboard accessible (Enter/Space key support)
+- Respects prefers-reduced-motion preferences
+- Scrolls to Developer Signature section with `scrollIntoView`
 
 ### 7. Sorting Visualizer Workspace UI ✅
 
@@ -518,10 +532,111 @@ Implemented four sorting algorithms with complete animation step generation:
 - Centralized route constants already defined in `src/constants/routes.ts`
 - Landing page remains header-free with dedicated hero layout
 
+### 20. Developer Signature Section ✅
+
+**Component Architecture**:
+- **DeveloperSignature Component** (`src/components/DeveloperSignature/DeveloperSignature.tsx`)
+  - Isolated, self-contained component with dedicated SCSS module
+  - Renders after Landing Footer as closing credits of the application
+  - Product-first, developer-second philosophy
+  - Premium software product aesthetic (Apple, Stripe, Vercel, NVIDIA, Linear)
+
+**Layout Structure**:
+- Visual divider separator
+- Section heading: "Meet the Developer"
+- Identity block (avatar + name + tagline as cohesive unit)
+- Biography (4 concise paragraphs, 20-30 second read time)
+- Contact methods (email + LinkedIn)
+- Closing signature: "Thanks for exploring algo_viz."
+
+**Identity Block**:
+- Circular avatar (150px desktop, 120px mobile)
+- Name: "Zahid Jamkhandi"
+- Tagline: "Driven by curiosity, Powered by code."
+- Minimal spacing for visual unity
+
+**Biography Content**:
+- Introduction with wave emoji 👋
+- Senior Experience Engineer, Bangalore, India, 5+ years experience
+- Current role: Publicis Sapient, AI-powered experiences for Goldman Sachs
+- Previous experience: Foundit (formerly Monster APAC & ME)
+- Passion: frontend architecture, performance engineering, GenAI
+- Project philosophy: making complex engineering concepts intuitive
+
+**Contact Links**:
+- Email: jamkhandizahid@gmail.com (with email icon)
+- LinkedIn: Zahid Jamkhandi → https://in.linkedin.com/in/zahidjmk (opens in new tab with rel="noopener noreferrer")
+
+**Animations**:
+- Viewport-triggered entrance animations using Intersection Observer API
+- Execute once when section enters viewport (threshold: 0.1)
+- Staggered animation sequence:
+  1. Divider fades in
+  2. Avatar scales (95% → 100%) + fade in (200ms delay)
+  3. Name fades in (300ms delay)
+  4. Tagline fades in (400ms delay)
+  5. Heading fades in (100ms delay)
+  6. Biography paragraphs stagger-fade (500ms, 550ms, 600ms, 650ms, 700ms delays)
+  7. Contact links slide upward (750ms, 800ms delays)
+  8. Footer fades in (850ms delay)
+- Animation duration: 250-500ms per element
+- CSS transitions for performance
+- Respects prefers-reduced-motion preferences
+
+**Avatar Styling**:
+- 150px circular image (140-160px range)
+- Thin accent border (2px solid $border-gray)
+- Soft shadow with neon green accent
+- Hover effects: border glow, scale(1.02)
+- Lazy loading (loading="lazy" attribute)
+- Object-fit: cover for proper cropping
+- Alt text: "Zahid Jamkhandi - Senior Experience Engineer"
+
+**NVIDIA Design Language**:
+- Reuses existing SCSS variables: $nvidia-green, $deep-black, $charcoal, $border-gray, $text-gray, $text-light
+- Typography scale from existing system
+- Spacing system consistency
+- Transition timings: $transition-fast (200ms), $transition-medium (300ms), $transition-slow (500ms)
+- Neon green accents on strong tags and contact icons
+- Gradient divider with border-gray
+
+**Accessibility**:
+- Semantic HTML: `<section>`, `<h2>`, `<h3>`, `<p>`, `<a>`
+- ARIA label on section: aria-label="Developer Signature"
+- ARIA labels on contact links: aria-label="Email Zahid Jamkhandi", aria-label="Connect with Zahid Jamkhandi on LinkedIn"
+- ARIA-hidden on decorative SVG icons
+- Keyboard accessible links with visible focus states
+- Focus-visible outline with neon green
+- Screen reader friendly content structure
+- Proper heading hierarchy (h2 for section heading, h3 for name)
+
+**Performance**:
+- Lazy loading on avatar image
+- No third-party animation libraries
+- Efficient CSS (hardware-accelerated transforms)
+- Intersection Observer for viewport detection
+- Minimal JavaScript footprint
+- Memory-safe observer cleanup on unmount
+- Bundle impact: 175.92 kB avatar image, minimal CSS increase (21.05 kB total CSS bundle)
+
+**Responsive Design**:
+- Desktop: centered layout, 150px avatar, 2.5rem heading, 1.125rem bio text
+- Mobile: stacked vertical layout, 120px avatar, 2rem heading, 1rem bio text
+- Tablet: same structure with reduced spacing
+- Max-width: 800px container for optimal readability
+- Full-width on mobile with responsive padding
+
+**Integration**:
+- Imported in LandingPage.tsx after landing-footer
+- Smooth-scroll CTA in Description section
+- No route changes (pure in-page navigation)
+- ID: "developer-signature" for scroll targeting
+- Feels like elegant extension, not separate page section
+
 ## Conclusion
 
 Successfully implemented a production-ready algorithm visualization platform with:
-- ✅ 21/21 todos completed (including pause/resume animation controls and global navigation system)
+- ✅ 22/22 todos completed (including pause/resume animation controls, global navigation system, and developer signature section)
 - ✅ Clean, maintainable architecture
 - ✅ Premium NVIDIA-inspired design
 - ✅ Full TypeScript type safety
@@ -531,8 +646,9 @@ Successfully implemented a production-ready algorithm visualization platform wit
 - ✅ Production build ready
 - ✅ Educational features for instructors (pause/resume at any step)
 - ✅ Scalable navigation architecture for future visualizers
+- ✅ Professional developer signature as closing credits
 
-**Latest Enhancements (July 19, 2026)**:
+**Latest Enhancements (July 20, 2026)**:
 
 1. **Interactive Pause/Resume Controls**:
    - Intuitive play/pause icon toggle
@@ -552,4 +668,21 @@ Successfully implemented a production-ready algorithm visualization platform wit
    - Landing page preserves dedicated hero layout (header-free)
    - Zero breaking changes to existing functionality
 
-The application is ready for deployment and demonstrates professional-grade frontend engineering practices with enhanced educational capabilities and scalable architecture for future growth.
+3. **Developer Signature Section**:
+   - Premium closing credits aesthetic (Apple, Stripe, Vercel, NVIDIA, Linear)
+   - Product-first, developer-second philosophy
+   - Isolated, self-contained component with dedicated SCSS module
+   - Viewport-triggered entrance animations with Intersection Observer
+   - Staggered animation sequence (divider, avatar, name, tagline, heading, bio, contacts, footer)
+   - NVIDIA-inspired design with neon green accents and glow effects
+   - Circular avatar (150px) with lazy loading and hover interactions
+   - Biography: 4 concise paragraphs (20-30 second read time)
+   - Contact methods: email + LinkedIn with SVG icons
+   - Smooth-scroll CTA in Description section with keyboard accessibility
+   - Full WCAG 2.1 AA accessibility compliance
+   - Respects prefers-reduced-motion preferences
+   - Minimal bundle impact (175.92 kB avatar, 21.05 kB total CSS)
+   - Responsive design (desktop centered, mobile stacked)
+   - Production-ready with TypeScript type safety
+
+The application is ready for deployment and demonstrates professional-grade frontend engineering practices with enhanced educational capabilities, scalable architecture for future growth, and a polished developer signature that leaves users with the impression of a thoughtfully crafted engineering product.

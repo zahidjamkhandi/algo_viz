@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { DeveloperSignature } from '../components/DeveloperSignature/DeveloperSignature';
 import './LandingPage.scss';
 
 export function LandingPage() {
@@ -29,6 +30,37 @@ export function LandingPage() {
             Built with React, TypeScript, and Vite. Engineered for performance. Designed for
             clarity.
           </p>
+          <button
+            className="meet-developer-cta"
+            onClick={() => {
+              const section = document.getElementById('developer-signature');
+              if (section) {
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                section.scrollIntoView({
+                  behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                  block: 'start',
+                });
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const section = document.getElementById('developer-signature');
+                if (section) {
+                  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                  section.scrollIntoView({
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                    block: 'start',
+                  });
+                }
+              }
+            }}
+            aria-label="Scroll to Developer Signature section"
+          >
+            <span className="cta-text">
+              Curious who built algo_viz? Meet the developer ↯
+            </span>
+          </button>
         </section>
 
         <section className="features-section">
@@ -93,6 +125,8 @@ export function LandingPage() {
           </p>
         </footer>
       </div>
+
+      <DeveloperSignature />
     </div>
   );
 }
