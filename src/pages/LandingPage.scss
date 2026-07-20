@@ -11,6 +11,7 @@ $text-light: #e5e7eb;
   background-color: $deep-black;
   color: $text-light;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -223,4 +224,60 @@ $text-light: #e5e7eb;
 .footer-text {
   color: $text-gray;
   font-size: 0.875rem;
+}
+
+.meet-developer-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid $border-gray;
+  border-radius: 8px;
+  color: $text-gray;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+
+  &:hover,
+  &:focus {
+    border-color: $nvidia-green;
+    color: $nvidia-green;
+    box-shadow: 0 0 15px rgba($nvidia-green, 0.2);
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $nvidia-green;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .cta-text {
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0.65rem 1.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover,
+    &:focus {
+      transform: none;
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
 }
