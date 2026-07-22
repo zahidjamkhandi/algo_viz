@@ -28,7 +28,7 @@ export function LandingPage() {
           </p>
           <p className="description-text">
             Built with React, TypeScript, and Vite. Engineered for performance. Designed for
-            clarity.
+            clarity. Powered with AI.
           </p>
           <button
             className="meet-developer-cta"
