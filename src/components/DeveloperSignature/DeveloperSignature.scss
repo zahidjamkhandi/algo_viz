@@ -1,5 +1,5 @@
-@use './../../styles/partials/colors' as *;
-@use './../../styles/partials/animations' as *;
+@use '@/styles/partials/colors' as *;
+@use '@/styles/partials/animations' as *;
 
 .developer-signature {
   background-color: $deep-black;
