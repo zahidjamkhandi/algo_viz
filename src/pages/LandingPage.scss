@@ -242,7 +242,8 @@ $text-light: #e5e7eb;
   width: 100%;
 
   &:hover,
-  &:focus {
+  &:focus 
+  {
     border-color: $nvidia-green;
     color: $nvidia-green;
     box-shadow: 0 0 15px rgba($nvidia-green, 0.2);
