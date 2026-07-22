@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LandingPage } from './pages/LandingPage';
-import { SortingVisualizer } from './pages/SortingVisualizer';
+import { LandingPage } from './pages/Landing/LandingPage';
+import { SortingVisualizer } from './pages/SortingVisualizer/SortingVisualizer';
 import ScrollToTop from './components/utility/scrollToTop';
 import './App.css';
 

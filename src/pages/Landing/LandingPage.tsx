@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { DeveloperSignature } from '../components/DeveloperSignature/DeveloperSignature';
+import { DeveloperSignature } from '../../components/DeveloperSignature/DeveloperSignature';
 import './LandingPage.scss';
 
 export function LandingPage() {

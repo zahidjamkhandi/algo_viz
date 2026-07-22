@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import type { SortingAlgorithm } from '../algos/sorting/types';
-import { ALGORITHM_INFO } from '../algos/sorting/types';
-import { useSortingVisualizer } from '../hooks/useSortingVisualizer';
-import { BarChart } from '../components/BarChart';
-import { AlgorithmSelector } from '../components/AlgorithmSelector';
-import { ArrayInput } from '../components/ArrayInput';
-import { SpeedControl } from '../components/SpeedControl';
-import { AnimationControls } from '../components/AnimationControls';
-import { WorkspaceHeader } from '../components/WorkspaceHeader/WorkspaceHeader';
+import type { SortingAlgorithm } from '../../algos/sorting/types';
+import { ALGORITHM_INFO } from '../../algos/sorting/types';
+import { useSortingVisualizer } from '../../hooks/useSortingVisualizer';
+import { BarChart } from '../../components/BarChart/BarChart';
+import { AlgorithmSelector } from '../../components/AlgorithmSelector/AlgorithmSelector';
+import { ArrayInput } from '../../components/Inputs/ArrayInput';
+import { SpeedControl } from '../../components/Controllerss/SpeedControl';
+import { AnimationControls } from '../../components/Controllerss/AnimationControls';
+import { WorkspaceHeader } from '../../components/WorkspaceHeader/WorkspaceHeader';
 import './SortingVisualizer.scss';
 
 const DEFAULT_ARRAY = [64, 34, 25, 12, 22, 11, 90, 88, 45, 50, 33, 17, 78];

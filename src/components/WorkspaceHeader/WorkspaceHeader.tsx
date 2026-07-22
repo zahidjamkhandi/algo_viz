@@ -7,7 +7,7 @@ interface WorkspaceHeaderProps {
   currentModule?: string;
 }
 
-export const WorkspaceHeader = ({ title, currentModule }: WorkspaceHeaderProps) => {
+export const WorkspaceHeader = ({ title }: WorkspaceHeaderProps) => {
   return (
     <header className="workspace-header" role="banner">
       <nav className="workspace-header__nav" aria-label="Main navigation">

@@ -1,5 +1,5 @@
-import type { SortingAlgorithm } from '../algos/sorting/types';
-import { ALGORITHM_INFO } from '../algos/sorting/types';
+import type { SortingAlgorithm } from '../../algos/sorting/types';
+import { ALGORITHM_INFO } from '../../algos/sorting/types';
 import './AlgorithmSelector.scss';
 
 interface AlgorithmSelectorProps {
