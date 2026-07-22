@@ -1,14 +1,5 @@
-$nvidia-green: #76b900;
-$deep-black: #000000;
-$charcoal: #0a0a0a;
-$dark-gray: #1a1a1a;
-$border-gray: #2a2a2a;
-$text-gray: #9ca3af;
-$text-light: #e5e7eb;
-
-$transition-fast: 200ms ease;
-$transition-medium: 300ms ease;
-$transition-slow: 500ms ease;
+@use './../../styles/partials/colors' as *;
+@use './../../styles/partials/animations' as *;
 
 .developer-signature {
   background-color: $deep-black;
